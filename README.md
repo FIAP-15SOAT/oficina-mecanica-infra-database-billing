@@ -48,7 +48,7 @@ Faz parte do ecossistema de serviços e infraestrutura da pós-graduação em Ar
 
 ### Credenciais, consumidores e migrações
 
-- O [serviço Billing](https://github.com/FIAP-15SOAT/oficina-mecanica-billing-service) descobre a instância RDS pelo identificador fixo `rds-oficina-mecanica-billing` (`RDS_INSTANCE_IDENTIFIER`) e o cache pelo identificador fixo `cache-oficina-mecanica-billing` e pelo secret `cache-oficina-mecanica-billing-auth-token` durante o CD (C-21), materializando os Secrets Kubernetes (`database-credentials` e `cache-credentials`) no namespace `billing` sem ler o state deste repositório.
+- O [serviço Billing](https://github.com/FIAP-15SOAT/oficina-mecanica-billing-service) descobre a instância RDS pelo identificador fixo `rds-oficina-mecanica-billing` (`RDS_INSTANCE_IDENTIFIER`) e o cache pelo identificador fixo `cache-oficina-mecanica-billing` e pelo secret `cache-oficina-mecanica-billing-auth-token` durante o CD, materializando os Secrets Kubernetes (`database-credentials` e `cache-credentials`) no namespace `billing` sem ler o state deste repositório.
 - O job `db-migrate` do **CD do Billing** executa `prisma migrate deploy` dentro do EKS antes de `app-deploy`. Este Terraform provisiona o RDS e o ElastiCache, mas não cria tabelas nem executa migrations.
 - Nenhum outro microsserviço ou Lambda acessa o banco ou o cache do Billing diretamente; toda integração síncrona ocorre por endpoints REST internos (`/internal/quotes`, `/internal/quotes/:id/approve`, `/internal/quotes/:id/reject` e consultas por `workOrderId`) e a integração assíncrona das Sagas ocorre via SNS/SQS FIFO.
 
